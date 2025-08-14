@@ -22,7 +22,7 @@ export function ItineraryCard({
   price,
 }: ItineraryCardProps) {
   return (
-    <article className="group relative bg-gradient-card rounded-xl shadow-card hover:shadow-card-hover transition-smooth overflow-hidden border border-border h-full flex flex-col">
+    <article className="group relative bg-card rounded-lg shadow-card hover:shadow-card-hover transition-smooth overflow-hidden border border-border h-full flex flex-col">
       <div className="relative aspect-[4/3] sm:aspect-[3/2] lg:aspect-[4/3] overflow-hidden">
         <img
           src={imageUrl}

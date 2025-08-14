@@ -1,10 +1,60 @@
+import { useState, useMemo } from "react";
 import { Compass, Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ItineraryCard } from "@/components/ItineraryCard";
+import { SearchBar, type SearchFilters } from "@/components/SearchBar";
 import { sampleItineraries } from "@/data/itineraries";
 import heroImage from "@/assets/hero-image.jpg";
 
 const Index = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState<SearchFilters>({});
+
+  // Filter and search logic
+  const filteredItineraries = useMemo(() => {
+    return sampleItineraries.filter((itinerary) => {
+      // Search query filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = 
+          itinerary.title.toLowerCase().includes(query) ||
+          itinerary.destination.toLowerCase().includes(query) ||
+          itinerary.highlights.some(h => h.toLowerCase().includes(query));
+        if (!matchesSearch) return false;
+      }
+
+      // Duration filter
+      if (filters.duration) {
+        const durationMatch = filters.duration === "half-day" 
+          ? itinerary.duration.toLowerCase().includes("half")
+          : itinerary.duration.toLowerCase().includes("full");
+        if (!durationMatch) return false;
+      }
+
+      // Price filter
+      if (filters.priceRange) {
+        const price = parseInt(itinerary.price.replace(/[^0-9]/g, ''));
+        const priceInRange = 
+          filters.priceRange === "budget" ? price < 75 :
+          filters.priceRange === "mid" ? price >= 75 && price <= 100 :
+          filters.priceRange === "premium" ? price > 100 : true;
+        if (!priceInRange) return false;
+      }
+
+      // Location filter
+      if (filters.location) {
+        const locationMatch = 
+          filters.location === "denver" ? itinerary.destination.toLowerCase().includes("denver") :
+          filters.location === "mountains" ? itinerary.destination.toLowerCase().includes("mountain") :
+          filters.location === "springs" ? itinerary.destination.toLowerCase().includes("springs") :
+          filters.location === "boulder" ? itinerary.destination.toLowerCase().includes("boulder") : true;
+        if (!locationMatch) return false;
+      }
+
+      return true;
+    });
+  }, [searchQuery, filters]);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -17,8 +67,8 @@ const Index = () => {
         
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
-            <Compass className="w-10 h-10 sm:w-12 sm:h-12 text-primary-glow" />
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+            <Compass className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white">
               Denver Day Trips
             </h1>
           </div>
@@ -28,6 +78,15 @@ const Index = () => {
             <br className="hidden sm:block" />
             From mountain peaks to historic towns, explore Colorado's gems.
           </p>
+          
+          {/* Hero Search Bar */}
+          <div className="w-full max-w-2xl mx-auto mb-8">
+            <SearchBar
+              onSearch={setSearchQuery}
+              onFilter={setFilters}
+              className="mb-6"
+            />
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto sm:max-w-none">
             <Button variant="hero" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 w-full sm:w-auto">
@@ -41,7 +100,7 @@ const Index = () => {
       </section>
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
+      <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
         <div className="container mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -50,14 +109,9 @@ const Index = () => {
             </div>
             
             <div className="flex items-center gap-2 sm:gap-4">
-              <Button variant="ghost" size="sm" className="px-2 sm:px-3">
-                <Search className="w-4 h-4" />
-                <span className="hidden sm:inline ml-2">Search</span>
-              </Button>
-              <Button variant="ghost" size="sm" className="px-2 sm:px-3">
-                <Filter className="w-4 h-4" />
-                <span className="hidden sm:inline ml-2">Filter</span>
-              </Button>
+              <div className="text-sm text-muted-foreground">
+                {filteredItineraries.length} trip{filteredItineraries.length !== 1 ? 's' : ''} found
+              </div>
             </div>
           </div>
         </div>
@@ -76,11 +130,43 @@ const Index = () => {
             </p>
           </div>
           
+          {/* Search Results Info */}
+          {(searchQuery || Object.values(filters).some(Boolean)) && (
+            <div className="mb-6 text-center">
+              <p className="text-sm text-muted-foreground">
+                {filteredItineraries.length === 0 ? (
+                  "No trips found matching your criteria. Try adjusting your search or filters."
+                ) : (
+                  `Showing ${filteredItineraries.length} of ${sampleItineraries.length} available trips`
+                )}
+              </p>
+            </div>
+          )}
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {sampleItineraries.map((itinerary) => (
+            {filteredItineraries.map((itinerary) => (
               <ItineraryCard key={itinerary.id} {...itinerary} />
             ))}
           </div>
+          
+          {filteredItineraries.length === 0 && (searchQuery || Object.values(filters).some(Boolean)) && (
+            <div className="text-center py-12">
+              <Compass className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">No trips found</h3>
+              <p className="text-muted-foreground mb-4">
+                Try adjusting your search terms or filters to find more options.
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setSearchQuery("");
+                  setFilters({});
+                }}
+              >
+                Clear all filters
+              </Button>
+            </div>
+          )}
           
           <div className="text-center mt-8 sm:mt-12">
             <Button variant="travel" size="lg" className="w-full sm:w-auto">

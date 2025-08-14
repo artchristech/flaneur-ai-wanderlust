@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Travel-inspired color palette */
+    /* Simplified Denver-inspired color palette */
     --background: 220 20% 98%;
     --foreground: 220 15% 15%;
 
@@ -18,21 +18,20 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 15%;
 
-    /* Warm sunset primary */
-    --primary: 25 95% 53%;
+    /* Colorado mountain blue primary */
+    --primary: 210 85% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 35 100% 65%;
 
-    /* Soft sky secondary */
-    --secondary: 210 50% 88%;
+    /* Subtle mountain gray secondary */
+    --secondary: 220 15% 95%;
     --secondary-foreground: 220 15% 25%;
 
     /* Muted earth tones */
     --muted: 220 15% 96%;
     --muted-foreground: 220 10% 50%;
 
-    /* Ocean accent */
-    --accent: 200 85% 60%;
+    /* Clean accent color */
+    --accent: 210 85% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -42,14 +41,11 @@ All colors MUST be HSL.
     --input: 220 20% 92%;
     --ring: 25 95% 53%;
 
-    /* Travel-specific design tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(25 95% 53%), hsl(35 100% 65%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 15% 98%));
-    --gradient-sky: linear-gradient(180deg, hsl(200 85% 60%), hsl(210 50% 88%));
+    /* Simplified design tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(210 85% 45%), hsl(210 75% 55%));
     
-    --shadow-card: 0 4px 24px -6px hsl(220 15% 15% / 0.1);
-    --shadow-card-hover: 0 8px 32px -8px hsl(220 15% 15% / 0.2);
-    --shadow-hero: 0 20px 60px -12px hsl(25 95% 53% / 0.3);
+    --shadow-card: 0 2px 8px -2px hsl(220 15% 15% / 0.08);
+    --shadow-card-hover: 0 4px 16px -4px hsl(220 15% 15% / 0.12);
 
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -83,9 +79,8 @@ All colors MUST be HSL.
     --popover: 220 20% 12%;
     --popover-foreground: 220 15% 92%;
 
-    --primary: 25 95% 53%;
+    --primary: 210 85% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 35 100% 65%;
 
     --secondary: 220 15% 20%;
     --secondary-foreground: 220 15% 85%;
@@ -93,7 +88,7 @@ All colors MUST be HSL.
     --muted: 220 15% 16%;
     --muted-foreground: 220 10% 65%;
 
-    --accent: 200 85% 60%;
+    --accent: 210 85% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 45%;
@@ -103,13 +98,10 @@ All colors MUST be HSL.
     --input: 220 15% 18%;
     --ring: 25 95% 53%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(25 95% 53%), hsl(35 100% 65%));
-    --gradient-card: linear-gradient(145deg, hsl(220 20% 12%), hsl(220 15% 16%));
-    --gradient-sky: linear-gradient(180deg, hsl(200 85% 60%), hsl(210 50% 35%));
+    --gradient-hero: linear-gradient(135deg, hsl(210 85% 45%), hsl(210 75% 55%));
     
-    --shadow-card: 0 4px 24px -6px hsl(0 0% 0% / 0.3);
-    --shadow-card-hover: 0 8px 32px -8px hsl(0 0% 0% / 0.4);
-    --shadow-hero: 0 20px 60px -12px hsl(25 95% 53% / 0.4);
+    --shadow-card: 0 2px 8px -2px hsl(0 0% 0% / 0.2);
+    --shadow-card-hover: 0 4px 16px -4px hsl(0 0% 0% / 0.25);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -144,28 +136,12 @@ All colors MUST be HSL.
     background: var(--gradient-hero);
   }
   
-  .bg-gradient-card {
-    background: var(--gradient-card);
-  }
-  
-  .bg-gradient-sky {
-    background: var(--gradient-sky);
-  }
-  
   .shadow-card {
     box-shadow: var(--shadow-card);
   }
   
   .shadow-card-hover {
     box-shadow: var(--shadow-card-hover);
-  }
-  
-  .shadow-hero {
-    box-shadow: var(--shadow-hero);
-  }
-  
-  .text-primary-glow {
-    color: hsl(var(--primary-glow));
   }
   
   /* Mobile-first responsive utilities */
